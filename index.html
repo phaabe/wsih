@@ -132,8 +132,6 @@
     </style>
 </head>
 <body>
-    <div class="country-info" id="country-info">Detecting location...</div>
-    
     <div class="card" id="content-card">
         <h2 class="content-title" id="content-title">Loading...</h2>
         <div class="series-name" id="series-name" style="display: none;"></div>
@@ -155,17 +153,9 @@
                 const data = await response.json();
                 userCountry = data.country_code;
                 console.log(userCountry);
-                
-                const countryInfo = document.getElementById('country-info');
-                if (userCountry === 'DE') {
-                    countryInfo.textContent = 'Germany - English & German content';
-                } else {
-                    countryInfo.textContent = `${data.country} - English content only`;
-                }
             } catch (error) {
                 console.error('Error detecting country:', error);
                 userCountry = 'unknown';
-                document.getElementById('country-info').textContent = 'Location unknown - English content only';
             }
         }
 
