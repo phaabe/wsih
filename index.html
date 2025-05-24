@@ -62,6 +62,7 @@
         
         .content-links {
             display: flex;
+            justify-content: center;
             gap: 15px;
             flex-wrap: wrap;
         }
@@ -69,8 +70,8 @@
         .content-link {
             display: inline-block;
             padding: 10px 15px;
-            background-color: #4a6fa5;
-            color: white;
+            background-color: #cdb0ff;
+            color: black;
             text-decoration: none;
             border-radius: 30px;
             font-size: 14px;
@@ -78,7 +79,7 @@
         }
         
         .content-link:hover {
-            background-color: #365985;
+            background-color: #9d7dd3;
         }
         
         .refresh-btn {
@@ -138,12 +139,9 @@
         <div class="series-name" id="series-name" style="display: none;"></div>
         <div class="content-meta">
             <span id="content-duration"></span>
-            <span class="type-badge" id="content-type"></span>
-            <span class="language-badge" id="content-language"></span>
         </div>
         <p class="content-comment" id="content-comment"></p>
         <div class="content-links" id="content-links"></div>
-        <button class="refresh-btn" onclick="loadRandomContent()">Show Another</button>
     </div>
 
     <script>
@@ -283,15 +281,6 @@
                 durationElement.textContent = `Avg. Duration: ${content.ca_Dauer} minutes`;
             }
 
-            document.getElementById('content-type').textContent = 
-                type === 'episode' ? 'Episode' : 'Series';
-
-            const languageElement = document.getElementById('content-language');
-            if (type === 'episode' && series) {
-                languageElement.textContent = series.Sprache;
-            } else if (type === 'series') {
-                languageElement.textContent = content.Sprache;
-            }
 
             const linksContainer = document.getElementById('content-links');
             linksContainer.innerHTML = '';
@@ -305,23 +294,6 @@
                 linksContainer.appendChild(podLink);
             }
 
-            if (content.direkt_Link && content.direkt_Link !== 'null' && content.direkt_Link !== null) {
-                const directLink = document.createElement('a');
-                directLink.href = content.direkt_Link;
-                directLink.className = 'content-link';
-                directLink.textContent = type === 'episode' ? 'Listen Now' : 'Visit';
-                directLink.target = '_blank';
-                linksContainer.appendChild(directLink);
-            }
-
-            if (content.Link && content.Link !== 'null' && content.Link !== null) {
-                const itunesLink = document.createElement('a');
-                itunesLink.href = content.Link;
-                itunesLink.className = 'content-link';
-                itunesLink.textContent = 'iTunes';
-                itunesLink.target = '_blank';
-                linksContainer.appendChild(itunesLink);
-            }
         }
 
         async function loadRandomContent() {
