@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Podcast Episode</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .episode-title {
+            font-size: 24px;
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        
+        .episode-comment {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .episode-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        
+        .episode-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .episode-link {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #4a6fa5;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .episode-link:hover {
+            background-color: #365985;
+        }
+        
+        .refresh-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f8f8f8;
+            color: #555;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .refresh-btn:hover {
+            background-color: #e8e8e8;
+        }
+
+        .no-link {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="card" id="episode-card">
+        <h2 class="episode-title" id="episode-title">Loading...</h2>
+        <div class="episode-meta">
+            <span id="episode-duration"></span>
+            <span id="episode-id"></span>
+        </div>
+        <p class="episode-comment" id="episode-comment"></p>
+        <div class="episode-links" id="episode-links"></div>
+        <button class="refresh-btn" onclick="loadRandomEpisode()">Show Another Episode</button>
+    </div>
+
+    <script>
+        async function fetchEpisodes() {
+            try {
+                const response = await fetch('episodes.json');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch episodes');
+                }
+                const episodes = await response.json();
+                // Filter out empty episodes
+                return episodes.filter(episode => episode.Titel && episode.Titel.trim() !== '');
+            } catch (error) {
+                console.error('Error fetching episodes:', error);
+                return [];
+            }
+        }
+
+        function getRandomEpisode(episodes) {
+            if (!episodes || episodes.length === 0) return null;
+            const randomIndex = Math.floor(Math.random() * episodes.length);
+            return episodes[randomIndex];
+        }
+
+        function displayEpisode(episode) {
+            if (!episode) {
+                document.getElementById('episode-title').textContent = 'Error loading episode';
+                return;
+            }
+
+            document.getElementById('episode-title').textContent = episode.Titel;
+            document.getElementById('episode-comment').textContent = episode.Kommentar;
+            document.getElementById('episode-duration').textContent = `Duration: ${episode.Dauer} minutes`;
+
+            const linksContainer = document.getElementById('episode-links');
+            linksContainer.innerHTML = '';
+
+            // Add podcast link if available
+            if (episode.pod_link && episode.pod_link !== '') {
+                const podLink = document.createElement('a');
+                podLink.href = episode.pod_link;
+                podLink.className = 'episode-link';
+                podLink.textContent = 'Pod Link';
+                podLink.target = '_blank';
+                linksContainer.appendChild(podLink);
+            }
+
+            // Add direct link if available
+            if (episode.direkt_Link && episode.direkt_Link !== 'null' && episode.direkt_Link !== null) {
+                const directLink = document.createElement('a');
+                directLink.href = episode.direkt_Link;
+                directLink.className = 'episode-link';
+                directLink.textContent = 'Listen Now';
+                directLink.target = '_blank';
+                linksContainer.appendChild(directLink);
+            }
+
+            // Add iTunes link if available
+            if (episode.Link && episode.Link !== 'null' && episode.Link !== null) {
+                const itunesLink = document.createElement('a');
+                itunesLink.href = episode.Link;
+                itunesLink.className = 'episode-link';
+                itunesLink.textContent = 'iTunes';
+                itunesLink.target = '_blank';
+                linksContainer.appendChild(itunesLink);
+            }
+        }
+
+        async function loadRandomEpisode() {
+            const episodes = await fetchEpisodes();
+            const randomEpisode = getRandomEpisode(episodes);
+            displayEpisode(randomEpisode);
+        }
+
+        // Load an episode when the page loads
+        document.addEventListener('DOMContentLoaded', loadRandomEpisode);
+    </script>
+</body>
+</html>
