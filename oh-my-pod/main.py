@@ -26,7 +26,7 @@ def remove_image_data(data: Dict[str, Any]) -> Dict[str, Any]:
     else:
         return data
 
-def fetch_and_store_json(url: str, output_file: str = "all-podcasts.json"):
+def fetch_and_store_json(url: str, output_file: str = "oh-my-pod/podcasts.json"):
     """Fetch JSON from URL and store it without image data."""
     try:
         # Prepare headers for Airtable API
