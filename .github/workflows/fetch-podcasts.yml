@@ -1,0 +1,31 @@
+name: fetch new podcasts
+
+on:
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  uv-example:
+    name: python
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Run script with secrets
+        run: |
+          uv run oh-my-pod/main.py
+        env:
+          BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
+
+      - name: Commit generated podcasts.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add oh-my-pod/podcasts.json
+          git commit -m "[bot] update podcasts.json" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
