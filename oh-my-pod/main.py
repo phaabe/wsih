@@ -31,7 +31,7 @@ def remove_image_data(data: Dict[str, Any]) -> Dict[str, Any]:
     else:
         return data
 
-def download_cover_image(cover_url: str, podcast_name: str, cover_dir: str = "oh-my-pod/cover") -> str:
+def download_cover_image(cover_url: str, podcast_name: str, cover_dir: str = "cover") -> str:
     """Download cover image and return the local file path."""
     try:
         # Create cover directory if it doesn't exist
@@ -45,7 +45,7 @@ def download_cover_image(cover_url: str, podcast_name: str, cover_dir: str = "oh
         safe_name = "".join(c for c in podcast_name if c.isalnum() or c in (' ', '-', '_')).rstrip()
         safe_name = safe_name.replace(' ', '_')
         filename = f"{safe_name}{file_ext}"
-        filepath = os.path.join(cover_dir, filename)
+        filepath = os.path.join("oh-my-pod", cover_dir, filename)
 
         # Download the image
         response = requests.get(cover_url, timeout=30)
@@ -103,7 +103,9 @@ def fetch_and_store_json(url: str, output_file: str = "oh-my-pod/podcasts.json")
 
                             # Add local cover path to the record
                             if local_path:
-                                record['fields']['CoverPath'] = local_path.replace("oh-my-pod/","")
+                                # Store path relative to the oh-my-pod directory for HTML usage
+                                relative_path = local_path.replace("oh-my-pod/", "")
+                                record['fields']['CoverPath'] = relative_path
 
         # Remove image data but preserve CoverPath
         cleaned_data = remove_image_data(data)
