@@ -103,9 +103,8 @@ def fetch_and_store_json(url: str, output_file: str = "oh-my-pod/podcasts.json")
 
                             # Add local cover path to the record
                             if local_path:
-                                # Store path relative to the oh-my-pod directory for HTML usage
-                                relative_path = local_path.replace("oh-my-pod/", "")
-                                record['fields']['CoverPath'] = relative_path
+                                # Store full path for HTML usage from parent directory
+                                record['fields']['CoverPath'] = local_path
 
         # Remove image data but preserve CoverPath
         cleaned_data = remove_image_data(data)
