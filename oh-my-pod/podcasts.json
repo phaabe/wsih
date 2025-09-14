@@ -1,23 +1,21 @@
 {
   "records": [
     {
-      "id": "recnD5kTKMOE0mlG3",
-      "createdTime": "2025-09-09T21:58:07.000Z",
       "fields": {
         "Title": "Where is Jón",
         "Description": "A story about Jón who disappears during a poker game in Ireland.",
         "Language": "English",
-        "Podlink": "https://pod.link/1815128281"
+        "Podlink": "https://pod.link/1815128281",
+        "CoverPath": "cover/podcast_recnD5kTKMOE0mlG3.jpg"
       }
     },
     {
-      "id": "recyvrhFVAplFh2rf",
-      "createdTime": "2025-09-09T22:09:57.000Z",
       "fields": {
         "Title": "SchwarzRotGold: Mesut Özil zu Gast bei Freunden",
         "Description": "Die Geschichte von Özil",
         "Language": "German",
-        "Podlink": "https://pod.link/1714416676"
+        "Podlink": "https://pod.link/1714416676",
+        "CoverPath": "cover/podcast_recyvrhFVAplFh2rf.jpg"
       }
     }
   ]
