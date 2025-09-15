@@ -52,7 +52,7 @@ wheels = [
 ]
 
 [[package]]
-name = "oh-my-pod"
+name = "wsih"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

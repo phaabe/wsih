@@ -45,7 +45,7 @@ def download_cover_image(cover_url: str, podcast_name: str, cover_dir: str = "co
         safe_name = "".join(c for c in podcast_name if c.isalnum() or c in (' ', '-', '_')).rstrip()
         safe_name = safe_name.replace(' ', '_')
         filename = f"{safe_name}{file_ext}"
-        filepath = os.path.join("oh-my-pod", cover_dir, filename)
+        filepath = os.path.join(cover_dir, filename)
 
         # Download the image
         response = requests.get(cover_url, timeout=30)
@@ -62,7 +62,7 @@ def download_cover_image(cover_url: str, podcast_name: str, cover_dir: str = "co
         print(f"Error downloading cover for {podcast_name}: {e}", file=sys.stderr)
         return ""
 
-def fetch_and_store_json(url: str, output_file: str = "oh-my-pod/podcasts.json"):
+def fetch_and_store_json(url: str, output_file: str = "podcasts.json"):
     """Fetch JSON from URL and store it without image data."""
     try:
         # Prepare headers for Airtable API
