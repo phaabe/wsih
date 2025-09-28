@@ -6,7 +6,7 @@
     <title>Random Podcast Episodes</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Times New Roman', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f5f5f5;
             display: flex;
             justify-content: center;
@@ -35,6 +35,7 @@
             color: #333;
             margin-top: 0;
             margin-bottom: 10px;
+	    text-align: center;
         }
 
         .series-name {
@@ -48,6 +49,7 @@
             color: #555;
             line-height: 1.6;
             margin-bottom: 20px;
+	    text-align: center;
         }
 
         .content-meta {
@@ -248,7 +250,7 @@
                 const podLink = document.createElement('a');
                 podLink.href = content.Podlink;
                 podLink.className = 'content-link';
-                podLink.textContent = 'Listen Now';
+                podLink.textContent = '▶ Listen Now';
                 podLink.target = '_blank';
                 linksContainer.appendChild(podLink);
             }
