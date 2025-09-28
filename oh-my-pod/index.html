@@ -154,7 +154,7 @@
         <p class="content-comment" id="content-comment"></p>
         <div class="content-links" id="content-links"></div>
         <p class="content-comment" style="text-align: center; margin-top: 20px;">
-            Recommended by <a href="https://ohmypod.de" target="_blank"><img src="oh-my-pod.webp" alt="oh-my-pod" style="height: 20px; vertical-align: middle; margin-left: 5px;"></a>
+	Curated by <a href="https://ohmypod.de" target="_blank"><img src="oh-my-pod.webp" alt="oh-my-pod" style="height: 25px; vertical-align: top; margin-left: 5px;"></a>
         </p>
     </div>
 
@@ -253,7 +253,7 @@
                 const podLink = document.createElement('a');
                 podLink.href = content.Podlink;
                 podLink.className = 'content-link';
-                podLink.textContent = '▶\U0000FE0E Listen Now';
+                podLink.innerHTML = "<span style='font-variant-emoji: text;'>&#x25b6;</span> Listen Now";
                 podLink.target = '_blank';
                 linksContainer.appendChild(podLink);
             }
