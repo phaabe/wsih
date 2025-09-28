@@ -30,18 +30,18 @@
             transform: translateY(-5px);
         }
 	.recommendation-title {
-            font-size: 24px;
-            font-family: 'Courier New', monospace;
+            font-family: 'Times New Roman', monospace;
             color: #333;
+	    font-style: italic;
             margin-top: -30px;
             margin-bottom: 20px;
             margin-left: -30px;
             margin-right: -30px;
             padding: 15px 30px;
             background: linear-gradient(135deg, #f8e8ff, #e8f4fd, #fff0e8);
-            border-radius: 20px 20px 0 0;
+            border-radius: 0;
             text-align: center;
-            font-weight: bold;
+            font-weight: 700;
         }
         .content-title {
             font-size: 24px;
@@ -161,12 +161,17 @@
             display: block;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
+
+        body a {
+            color: #333;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
     <div class="card" id="content-card">
         <p class="recommendation-title">
-	Podcap Recommendation
+	<a href="https://podcaps.de">podcaps.de recommends</a>
 	</p>
         <img class="podcast-cover" id="podcast-cover" style="display: none;" alt="Podcast Cover">
         <h2 class="content-title" id="content-title">Loading...</h2>
@@ -179,6 +184,10 @@
         <p class="our-footer" >
 	Curated by <a href="https://ohmypod.de" target="_blank"><img src="oh-my-pod.webp" alt="oh-my-pod" style="height: 25px; vertical-align: top; margin-left: 5px;"></a>
         </p>
+        <p class="our-footer" >
+	more caps <a href="https://podcaps.de">🧢🧢🧢</a>
+	</p>
+	<a href="https://www.podcaps.de/about-7">impressum</a>
     </div>
 
     <script>
