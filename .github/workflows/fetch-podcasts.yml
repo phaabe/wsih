@@ -16,7 +16,6 @@ jobs:
 
       - name: Run script with secrets
         run: |
-          cd oh-my-pod/
           uv run main.py
         env:
           BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
@@ -25,7 +24,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          cd oh-my-pod/
           git add podcasts.json
           git add cover
           git commit -m "[bot] update podcasts.json" || echo "No changes to commit"

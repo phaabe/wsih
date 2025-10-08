@@ -74,7 +74,7 @@ def download_cover_image(
         return ""
 
 
-def fetch_and_store_json(url: str, output_file: str = "podcasts.json"):
+def fetch_and_store_json(url: str, output_file: str = "eyu3ieBee5ookie7.json"):
     """Fetch JSON from URL and store it without image data."""
     try:
         # Prepare headers for Airtable API

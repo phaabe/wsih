@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Podcast Episode</title>
+    <title>Random Podcast Episodes</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Times New Roman', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f5f5f5;
             display: flex;
             justify-content: center;
@@ -15,7 +15,7 @@
             margin: 0;
             padding: 20px;
         }
-        
+
         .card {
             background-color: white;
             border-radius: 20px;
@@ -25,31 +25,53 @@
             width: 100%;
             transition: transform 0.3s ease;
         }
-        
+
         .card:hover {
             transform: translateY(-5px);
         }
-        
+	.recommendation-title {
+            font-family: 'Times New Roman', monospace;
+            color: #333;
+	    font-style: italic;
+            margin-top: -30px;
+            margin-bottom: 20px;
+            margin-left: -30px;
+            margin-right: -30px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #f8e8ff, #e8f4fd, #fff0e8);
+            border-radius: 0;
+            text-align: center;
+            font-weight: 700;
+        }
         .content-title {
             font-size: 24px;
             color: #333;
             margin-top: 0;
             margin-bottom: 10px;
+	    text-align: center;
         }
-        
+
         .series-name {
             font-size: 18px;
             color: #666;
             font-style: italic;
             margin-bottom: 15px;
         }
-        
+
         .content-comment {
             color: #555;
             line-height: 1.6;
             margin-bottom: 20px;
+	    text-align: left;
         }
-        
+
+        .our-footer {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+	    text-align: center;
+        }
+
         .content-meta {
             display: flex;
             justify-content: space-between;
@@ -59,14 +81,14 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-        
+
         .content-links {
             display: flex;
             justify-content: center;
             gap: 15px;
             flex-wrap: wrap;
         }
-        
+
         .content-link {
             display: inline-block;
             padding: 10px 15px;
@@ -77,11 +99,11 @@
             font-size: 14px;
             transition: background-color 0.2s ease;
         }
-        
+
         .content-link:hover {
             background-color: #9d7dd3;
         }
-        
+
         .refresh-btn {
             display: inline-block;
             margin-top: 20px;
@@ -94,7 +116,7 @@
             font-size: 14px;
             transition: background-color 0.2s ease;
         }
-        
+
         .refresh-btn:hover {
             background-color: #e8e8e8;
         }
@@ -129,23 +151,48 @@
             font-size: 12px;
             color: #999;
         }
+
+        .podcast-cover {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 30px auto 30px auto;
+            display: block;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        body a {
+            color: #333;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
     <div class="card" id="content-card">
+        <p class="recommendation-title">
+	<a href="https://podcaps.de">podcaps.de recommends</a>
+	</p>
+        <img class="podcast-cover" id="podcast-cover" style="display: none;" alt="Podcast Cover">
         <h2 class="content-title" id="content-title">Loading...</h2>
         <div class="series-name" id="series-name" style="display: none;"></div>
-        <div class="content-meta">
+        <div class="content-meta" style="display: none;">
             <span id="content-duration"></span>
         </div>
         <p class="content-comment" id="content-comment"></p>
         <div class="content-links" id="content-links"></div>
+        <p class="our-footer" >
+	Curated by <a href="https://ohmypod.de" target="_blank"><img src="oh-my-pod.webp" alt="oh-my-pod" style="height: 25px; vertical-align: top; margin-left: 5px;"></a>
+        </p>
+        <p class="our-footer" >
+	more caps <a href="https://podcaps.de">🧢🧢🧢</a>
+	</p>
+	<a href="https://www.podcaps.de/about-7">impressum</a>
     </div>
 
     <script>
         let userCountry = null;
-        let allEpisodes = [];
-        let allSeries = [];
+        let allPodcasts = [];
 
         async function detectCountry() {
             try {
@@ -161,88 +208,51 @@
 
         async function fetchData() {
             try {
-                const [episodesResponse, seriesResponse] = await Promise.all([
-                    fetch('episodes.json'),
-                    fetch('series.json')
-                ]);
+                const podcastsResponse = await fetch('eyu3ieBee5ookie7.json');
 
-                if (!episodesResponse.ok || !seriesResponse.ok) {
+                if (!podcastsResponse.ok) {
                     throw new Error('Failed to fetch data');
                 }
 
-                allEpisodes = await episodesResponse.json();
-                allSeries = await seriesResponse.json();
+                const data = await podcastsResponse.json();
+                allPodcasts = data.records || [];
 
-                allEpisodes = allEpisodes.filter(episode => 
-                    episode.Titel && episode.Titel.trim() !== ''
-                );
-
-                allSeries = allSeries.filter(series => 
-                    series.Titel && series.Titel.trim() !== ''
+                allPodcasts = allPodcasts.filter(podcast =>
+                    podcast.fields && podcast.fields.Title && podcast.fields.Title.trim() !== ''
                 );
 
             } catch (error) {
                 console.error('Error fetching data:', error);
-                allEpisodes = [];
-                allSeries = [];
+                allPodcasts = [];
             }
         }
 
         function filterContentByLanguage() {
-            let filteredEpisodes = [];
-            let filteredSeries = [];
+            let filteredPodcasts = [];
 
             if (userCountry === 'DE') {
-                filteredEpisodes = allEpisodes;
-                filteredSeries = allSeries;
+                filteredPodcasts = allPodcasts;
             } else {
-                const seriesIdMap = {};
-                allSeries.forEach(series => {
-                    seriesIdMap[series.id] = series.Sprache;
-                });
-
-                filteredEpisodes = allEpisodes.filter(episode => {
-                    const seriesLanguage = seriesIdMap[episode.id_serie];
-                    return seriesLanguage === 'Englisch';
-                });
-
-                filteredSeries = allSeries.filter(series => 
-                    series.Sprache === 'Englisch'
+                filteredPodcasts = allPodcasts.filter(podcast =>
+                    podcast.fields.Language === 'English'
                 );
             }
 
-            return { episodes: filteredEpisodes, series: filteredSeries };
+            return { podcasts: filteredPodcasts };
         }
 
         function getRandomContent() {
-            const { episodes, series } = filterContentByLanguage();
-            
-            if (episodes.length === 0 && series.length === 0) {
+            const { podcasts } = filterContentByLanguage();
+
+            if (podcasts.length === 0) {
                 return null;
             }
 
-            const contentTypes = [];
-            if (episodes.length > 0) contentTypes.push('episode');
-            if (series.length > 0) contentTypes.push('series');
-
-            const selectedType = contentTypes[Math.floor(Math.random() * contentTypes.length)];
-
-            if (selectedType === 'episode') {
-                const randomEpisode = episodes[Math.floor(Math.random() * episodes.length)];
-                const seriesInfo = allSeries.find(s => s.id === randomEpisode.id_serie);
-                return {
-                    type: 'episode',
-                    content: randomEpisode,
-                    series: seriesInfo
-                };
-            } else {
-                const randomSeries = series[Math.floor(Math.random() * series.length)];
-                return {
-                    type: 'series',
-                    content: randomSeries,
-                    series: null
-                };
-            }
+            const randomPodcast = podcasts[Math.floor(Math.random() * podcasts.length)];
+            return {
+                type: 'podcast',
+                content: randomPodcast.fields
+            };
         }
 
         function displayContent(contentData) {
@@ -251,46 +261,41 @@
                 return;
             }
 
-            const { type, content, series } = contentData;
+            const { content } = contentData;
 
-            document.getElementById('content-title').textContent = content.Titel;
-            document.getElementById('content-comment').textContent = content.Kommentar;
+            document.getElementById('content-title').textContent = content.Title;
+            document.getElementById('content-comment').textContent = content.Description;
+
+            const coverElement = document.getElementById('podcast-cover');
+            if (content.CoverPath && content.CoverPath !== '') {
+                coverElement.src = content.CoverPath;
+                coverElement.style.display = 'block';
+            } else {
+		console.log("cover not found")
+                coverElement.style.display = 'none';
+            }
 
             const seriesNameElement = document.getElementById('series-name');
-            if (type === 'episode' && series) {
-                seriesNameElement.textContent = `From: ${series.Titel}`;
-                seriesNameElement.style.display = 'block';
-            } else {
-                seriesNameElement.style.display = 'none';
-            }
-
-            const durationElement = document.getElementById('content-duration');
-            if (type === 'episode') {
-                durationElement.textContent = `Duration: ${content.Dauer} minutes`;
-            } else {
-                durationElement.textContent = `Avg. Duration: ${content.ca_Dauer} minutes`;
-            }
-
+            seriesNameElement.style.display = 'none';
 
             const linksContainer = document.getElementById('content-links');
             linksContainer.innerHTML = '';
 
-            if (content.pod_link && content.pod_link !== '') {
+            if (content.Podlink && content.Podlink !== '') {
                 const podLink = document.createElement('a');
-                podLink.href = content.pod_link;
+                podLink.href = content.Podlink;
                 podLink.className = 'content-link';
-                podLink.textContent = 'Pod Link';
+                podLink.innerHTML = "<span style='font-variant-emoji: text;'>&#x25b6;</span> Listen Now";
                 podLink.target = '_blank';
                 linksContainer.appendChild(podLink);
             }
-
         }
 
         async function loadRandomContent() {
-            if (allEpisodes.length === 0 || allSeries.length === 0) {
+            if (allPodcasts.length === 0) {
                 await fetchData();
             }
-            
+
             const randomContent = getRandomContent();
             displayContent(randomContent);
         }
@@ -300,7 +305,7 @@
                 detectCountry(),
                 fetchData()
             ]);
-            
+
             await loadRandomContent();
         }
 
